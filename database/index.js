@@ -1,0 +1,87 @@
+const config = require('./config.js');
+
+let knex;
+
+knex = require('knex')({
+  client: 'mysql',
+  connection: config.mySql,
+});
+
+// const getAllPosts = () => {
+//   return knex.column(knex.raw('posts.*, users.username')).select()
+//     .from(knex.raw('posts, users'))
+//     .where(knex.raw('posts.user_id = users.user_id'))
+//     .orderBy('post_id', 'desc');
+// };
+
+// const getComments = (postId) => {
+//   return knex.column(knex.raw('comments.*, users.username')).select()
+//     .from(knex.raw('comments, users'))
+//     .where(knex.raw(`comments.post_id = ${postId} and comments.user_id = users.user_id`));
+// };
+
+
+// const createPost = (post) => {
+//   return knex('posts').insert({
+//     user_id: post.userId,
+//     title: post.title,
+//     code: post.codebox,
+//     summary: post.description,
+//     anon: false //hard coded to false until functionality implemented
+//   });
+// };
+
+// const createComment = (comment) => {
+//   return knex('comments').insert({
+//     user_id: comment.user_id,
+//     post_id: comment.post_id,
+//     message: comment.message
+//   }).orderBy('comment_id', 'asc');
+// };
+
+// const checkCredentials = (username) => {
+//   return knex.select().from('users')
+//     .where(knex.raw(`LOWER(username) = LOWER('${username}')`));
+// };
+
+// const createUser = async (username, password) => {
+//   const query = await knex.select().from('users')
+//     .where(knex.raw(`LOWER(username) = LOWER('${username}')`));
+
+//   if (query.length) {
+//     return 'already exists';
+//   } else {
+//     return await knex('users').insert({ username: username, password: password});
+//   }
+// };
+
+// const markSolution = (commentId, postId) => {
+//   knex('posts').where('post_id', postId).update('solution_id', commentId);
+// };
+
+// const checkCoin = (userId) => {
+//   return knex.select('hackcoin').from('users').where('user_id', userId);
+// };
+
+// const subtractCoins = async (currenthackcoin, subtractinghackcoin, userId, commentId) => {
+//   await knex('users').where('user_id', userId).update('hackcoin', currenthackcoin - subtractinghackcoin);
+//   await knex('comments').where('comment_id', commentId).increment('votes', subtractinghackcoin);  //update votes by amount of hackcoins subtracted
+// };
+
+// const refreshCoins = () => {
+//   knex('users').update('hackcoin', 5);
+// };
+
+// module.exports = {
+//   getAllPosts,
+//   createPost,
+//   getComments,
+//   // getPostsWithCommentsAsync,
+//   checkCredentials,
+//   createUser,
+//   createComment,
+//   markSolution,
+//   checkCoin,
+//   subtractCoins,
+//   refreshCoins
+// };
