@@ -7,27 +7,70 @@ const Calendar = (props) => {
   $(function() {
     $('#calendar').fullCalendar({
 
-
     header: {
       left: 'prev,next today',
       center: 'title,addEventButton', // same name as line 35 if want to add other buttons to do stuffs
       right: 'month,agendaWeek,agendaDay'
     },
+
     droppable: true,
     editable: true,
+    selectable: true,
+    selectHelper: true,
+    unselectAuto: false,
+
+
+
+    select: function(start, end, allDay) {
+      var title = prompt('Event Title:');
+      var description = prompt('Event Description?')
+      if (title) {
+          $('#calendar').fullCalendar('renderEvent',
+              {
+                  title: title,
+                  start: start,
+                  end: end,
+                  description: description,
+                  allDay: false
+              },
+              true // make the event "stick"
+          );
+          /**
+           * ajax call to store event in DB
+           */
+          /*jQuery.post(
+              "event/new" // your url
+              , { // re-use event's data
+                  title: title,
+                  start: start,
+                  end: end,
+                  allDay: allDay
+              }
+          );*/
+      }
+      $('#calendar').fullCalendar('unselect');
+    },
+
     events: [
         props,
         {
-          title: 'blah',
+          title: 'Tumble22',
           start: '2018-03-16T12:30:00',
-          end: '2018-03-16T13:30:00'
+          end: '2018-03-16T13:30:00',
+          description: 'OG Southern Chicken Sandwhich, Dang hot, with a side of chips, for here please'
         },
         {
-          title: 'blah2',
+          title: 'Happy Chick',
           start: '2018-03-17T11:30:00',
-          end: '2018-03-16T12:30:00'
+          end: '2018-03-16T12:30:00',
+          description: 'Class Chic, spicy, with honey siracha and ranch please'
         },
     ],
+    eventRender: function(event, element) {
+      if (event.description) {
+        element.find('.fc-title').append("<br/>" + event.description);
+      }
+    },
     minTime: '',
 
     customButtons: {
