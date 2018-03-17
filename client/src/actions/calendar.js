@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
+const moment = require('moment');
 import 'fullcalendar';
 
 const Calendar = (props) => {
@@ -10,9 +11,8 @@ const Calendar = (props) => {
     header: {
       center: 'addEventButton'
     },
-    events: {
-      /*
-        example input
+    events: [
+        props,
         {
           title: 'blah',
           start: '2018-03-16T12:30:00',
@@ -23,8 +23,7 @@ const Calendar = (props) => {
           start: '2018-03-17T11:30:00',
           end: '2018-03-16T12:30:00'
         }
-      */
-    },
+    ],
     minTime: '',
 
     customButtons: {
@@ -77,7 +76,9 @@ const Calendar = (props) => {
 
 
 return (
+    <div>
       <div id='calendar'></div>
+    </div>
   )
 }
 
