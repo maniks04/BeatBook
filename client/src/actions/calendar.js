@@ -23,12 +23,14 @@ const Calendar = (props) => {
 
     select: function(start, end, allDay) {
       var title = prompt('Event Title:');
+      var description = prompt('Event Description?')
       if (title) {
           $('#calendar').fullCalendar('renderEvent',
               {
                   title: title,
                   start: start,
                   end: end,
+                  description: description,
                   allDay: false
               },
               true // make the event "stick"
