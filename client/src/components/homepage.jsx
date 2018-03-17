@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
+import Calendar from '../actions/calendar.js'
 
 class Home extends React.Component {
     constructor(props) {
@@ -13,7 +14,13 @@ class Home extends React.Component {
 
 
     render() {
-        return(<div>hello manik</div>)
+
+        return(
+          <div>
+            <div>hello manik</div>
+            <div id='calendar'></div>
+          </div>
+        )
     }
 }
 
