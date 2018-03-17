@@ -10,7 +10,7 @@ import Dialog from 'material-ui/Dialog';
 import Login from './login.jsx'
 import * as reducers from '../reducers/index.js'
 import Calendar from '../actions/calendar.js'
-
+// import music from './music.png'
 
 class Home extends React.Component {
     constructor(props) {
@@ -45,9 +45,29 @@ class Home extends React.Component {
 
 
     render() {
+        const styles = {
+            logo: {
+                height: 25,
+                width: 25
+            },
+            beatbook: {
+                fontSize: 20,
+                float: 'left',
+                fontFamily: 'system-ui'
+            },
+            login: {
+                textAlign: 'center'
+            }
+        }
+
         return( <div>
-                    <h1>Home page</h1>
+                    <div>
+                    <div style={styles.beatbook}>beatbook</div>
+                    <img style={styles.logo} src="http://files.idg.co.kr/itworld/image/avatar/article/2015/March/sookyung_lee@idg.co.kr/%20%EB%B0%80%ED%81%AC.png"></img>
+                    </div>
+                    <div style={styles.login}>
                     <Login submitLogin={this.submitLogin}/>
+                    </div>
                 </div>)
     }
 }
