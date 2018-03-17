@@ -7,14 +7,46 @@ const Calendar = (props) => {
   $(function() {
     $('#calendar').fullCalendar({
 
-
     header: {
       left: 'prev,next today',
       center: 'title,addEventButton', // same name as line 35 if want to add other buttons to do stuffs
       right: 'month,agendaWeek,agendaDay'
     },
+
     droppable: true,
     editable: true,
+    selectable: true,
+    selectHelper: true,
+    unselectAuto: false,
+
+    select: function(start, end, allDay) {
+      var title = prompt('Event Title:');
+      if (title) {
+          $('#calendar').fullCalendar('renderEvent',
+              {
+                  title: title,
+                  start: start,
+                  end: end,
+                  allDay: false
+              },
+              true // make the event "stick"
+          );
+          /**
+           * ajax call to store event in DB
+           */
+          /*jQuery.post(
+              "event/new" // your url
+              , { // re-use event's data
+                  title: title,
+                  start: start,
+                  end: end,
+                  allDay: allDay
+              }
+          );*/
+      }
+      $('#calendar').fullCalendar('unselect');
+    },
+
     events: [
         props,
         {
