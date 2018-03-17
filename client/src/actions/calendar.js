@@ -19,6 +19,8 @@ const Calendar = (props) => {
     selectHelper: true,
     unselectAuto: false,
 
+
+
     select: function(start, end, allDay) {
       var title = prompt('Event Title:');
       if (title) {
@@ -50,16 +52,23 @@ const Calendar = (props) => {
     events: [
         props,
         {
-          title: 'blah',
+          title: 'Tumble22',
           start: '2018-03-16T12:30:00',
-          end: '2018-03-16T13:30:00'
+          end: '2018-03-16T13:30:00',
+          description: 'OG Southern Chicken Sandwhich, Dang hot, with a side of chips, for here please'
         },
         {
-          title: 'blah2',
+          title: 'Happy Chick',
           start: '2018-03-17T11:30:00',
-          end: '2018-03-16T12:30:00'
+          end: '2018-03-16T12:30:00',
+          description: 'Class Chic, spicy, with honey siracha and ranch please'
         },
     ],
+    eventRender: function(event, element) {
+      if (event.description) {
+        element.find('.fc-title').append("<br/>" + event.description);
+      }
+    },
     minTime: '',
 
     customButtons: {
