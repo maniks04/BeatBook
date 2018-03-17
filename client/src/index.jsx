@@ -3,30 +3,39 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import reducer from './reducers/index.js';
-// import Venue from './components/venue.jsx';
-// import Artist from './components/artist.jsx';
-import $ from 'jquery'; // need for calendar
-//import cn from 'classnames'
 import Home from './components/homepage.jsx'
+import Artist from './components/artist.jsx'
+import Venue from './components/venue.jsx'
+import reducer from './reducers/index.js';
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
+import $ from 'jquery'
+// import AnyComponent from './components/filename.jsx'
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-} from 'react-router-dom';
+let store = createStore(reducer)
+//let store = createStore(reducer, applyMiddleware(thunk));
 
-const Root = ({ store }) => (
+const Base = ({ store }) => (
   <Provider store={store}>
       <Router>
+      <MuiThemeProvider theme={getMuiTheme(lightBaseTheme)}>
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route exact path="/artist" component={Artist} />
+          <Route exact path="/venue" component={Venue} />
         </Switch>
+        </MuiThemeProvider>
       </Router>
   </Provider>
 );
 
-let store = createStore(reducer, applyMiddleware(thunk));
 
-ReactDOM.render( <Root store={store} />
-  , document.getElementById('app'));
+function render() {
+ReactDOM.render(<Base store={store} />, document.getElementById('app'));
+}
+
+store.subscribe(render);
+render()
+
