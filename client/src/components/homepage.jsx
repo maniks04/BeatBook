@@ -9,11 +9,14 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import Login from './login.jsx'
 import * as reducers from '../reducers/index.js'
+import Calendar from '../actions/calendar.js'
+
 
 class Home extends React.Component {
     constructor(props) {
         super(props)
         this.submitLogin = this.submitLogin.bind(this)
+
     }
 
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
@@ -12,6 +11,7 @@ import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
+import $ from 'jquery'
 // import AnyComponent from './components/filename.jsx'
 
 let store = createStore(reducer)
@@ -19,7 +19,6 @@ let store = createStore(reducer)
 
 const Base = ({ store }) => (
   <Provider store={store}>
-    <MuiThemeProvider theme={getMuiTheme(lightBaseTheme)}>
       <Router>
         <Switch>
           <Route exact path="/" component={Home} />
@@ -27,7 +26,6 @@ const Base = ({ store }) => (
           <Route exact path="/venue" component={Venue} />
         </Switch>
       </Router>
-    </MuiThemeProvider>
   </Provider>
 );
 
@@ -38,3 +36,5 @@ ReactDOM.render(<Base store={store} />, document.getElementById('app'));
 
 store.subscribe(render);
 render()
+ReactDOM.render( <Root store={store} />
+  , document.getElementById('app'));
