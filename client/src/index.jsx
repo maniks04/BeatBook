@@ -20,11 +20,13 @@ let store = createStore(reducer)
 const Base = ({ store }) => (
   <Provider store={store}>
       <Router>
+      <MuiThemeProvider theme={getMuiTheme(lightBaseTheme)}>
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/artist" component={Artist} />
           <Route exact path="/venue" component={Venue} />
         </Switch>
+        </MuiThemeProvider>
       </Router>
   </Provider>
 );
@@ -36,5 +38,4 @@ ReactDOM.render(<Base store={store} />, document.getElementById('app'));
 
 store.subscribe(render);
 render()
-ReactDOM.render( <Root store={store} />
-  , document.getElementById('app'));
+
