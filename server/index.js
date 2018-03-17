@@ -14,9 +14,11 @@ app.post('/', function(req, res) {
 
 
 app.post('/password', (req,  res) => {
-  if (req.body.password === 'artist') {
+  let username = req.body.username;
+  let password = req.body.password;
+  if (username === 'artist' && password === 'artist') {
     res.send('artist')
-  } if (req.body.password === 'venue') {
+  } if (username === 'venue' && password === 'venue') {
     res.send('venue')
   } else {
     res.send(false)

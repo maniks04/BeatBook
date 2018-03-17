@@ -14,6 +14,9 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
 // import AnyComponent from './components/filename.jsx'
 
+let store = createStore(reducer)
+//let store = createStore(reducer, applyMiddleware(thunk));
+
 const Base = ({ store }) => (
   <Provider store={store}>
     <MuiThemeProvider theme={getMuiTheme(lightBaseTheme)}>
@@ -28,7 +31,10 @@ const Base = ({ store }) => (
   </Provider>
 );
 
-let store = createStore(reducer, applyMiddleware(thunk));
 
-
+function render() {
 ReactDOM.render(<Base store={store} />, document.getElementById('app'));
+}
+
+store.subscribe(render);
+render()

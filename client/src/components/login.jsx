@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions/index.js';
+import {open} from '../actions'
 import { bindActionCreators } from 'redux';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
@@ -9,58 +10,69 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-
+import * as reducers from '../reducers/index.js'
+import { Dispatch } from "redux";
 
 
 class Login extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            password:'',
-            open: false
-        }
-        this.handleChange = this.handleChange.bind(this)
-        this.open = this.open.bind(this)
-        this.close = this.close.bind(this)
-        this.click = this.click.bind(this)
-    }
-
-    open() {
-        this.setState({open:true})
-    }
-
-    close() {
-        this.setState({open:false})
-    }
-
-    handleChange(e) {
-       this.setState({password:e.target.value})
-    }
-
-    click(e) {
-        this.props.click(this.state.password)
+        this.openLoginModal = this.openLoginModal.bind(this)
+        this.closeLoginModal = this.closeLoginModal.bind(this)
+        this.submitLogin = this.submitLogin.bind(this)
     }
 
 
+    openLoginModal() {
+       this.props.actions.openLoginModal()  //sets login modal state to true
+    }
+    closeLoginModal() {
+        this.props.actions.closeLoginModal() //sets login modal state to false
+    }
+
+   
+    submitLogin() {
+        let username = $('#loginUsernameInput').val()
+        let password = $('#loginPasswordInput').val()
+        this.props.actions.closeLoginModal()
+        this.props.submitLogin(username, password)
+    }
+
+    
 
     render() {
         const actions = [
-            <FlatButton label="cancel" onClick={this.close}/>,
-            <FlatButton label="submit" onClick={this.click}/>
+            <FlatButton label="Cancel" onClick={this.closeLoginModal}/>,
+            <FlatButton label="Login" onClick={this.submitLogin}/>
         ]
 
         return( <div>
-                    <RaisedButton onClick={this.open} label='login'/>
+                    <RaisedButton onClick={this.openLoginModal} label='login'/>
                     <Dialog 
                         actions={actions} 
-                        open={this.state.open} 
-                        onRequestClose={this.close}>
+                        open={this.props.store.loginModalStatus} //modal state is false
+                        onRequestClose={this.closeLoginModal}> 
                         <TextField
-                            id="passwordInput" 
-                            onChange={(e) => this.handleChange(e)}/> 
+                            id="loginUsernameInput" 
+                            placeholder="username"
+                        />
+                        <TextField
+                            id="loginPasswordInput" 
+                            placeholder="password"
+                        /> 
                     </Dialog>
                 </div>)
     }
 }
 
-export default Login
+
+const mapStateToProps = state => (
+    { store: state } // eslint-disable-line
+  );
+  
+  const mapDispatchToProps = dispatch => (
+    { actions: bindActionCreators(actions, dispatch) }
+  );
+
+  export default connect(mapStateToProps, mapDispatchToProps)(Login);
+//export default Login

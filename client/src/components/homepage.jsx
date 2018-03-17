@@ -8,25 +8,22 @@ import axios from 'axios'
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import Login from './login.jsx'
+import * as reducers from '../reducers/index.js'
 
 class Home extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            password:'',
-            open: false
-        }
-        this.click = this.click.bind(this)
+        this.submitLogin = this.submitLogin.bind(this)
     }
 
 
     componentDidMount() {
         console.log('mounted homepage')
-        console.log(this.props.history)
     }
 
-    click(password) {
+    submitLogin(username, password) {
         axios.post('/password', {
+            username: username,
             password: password
         }).then(res => {
             if (res.data === 'artist') {
@@ -38,8 +35,7 @@ class Home extends React.Component {
             }
         }).catch(err => {
             console.log(err)
-        })
-        
+        })   
     }
 
     
@@ -48,7 +44,7 @@ class Home extends React.Component {
     render() {
         return( <div>
                     <h1>Home page</h1>
-                    <Login click={this.click}/>
+                    <Login submitLogin={this.submitLogin}/>
                 </div>)
     }
 }
