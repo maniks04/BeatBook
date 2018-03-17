@@ -1,18 +1,22 @@
 import React from 'react';
 import $ from 'jquery';
+const moment = require('moment');
 import 'fullcalendar';
 
 const Calendar = (props) => {
   $(function() {
     $('#calendar').fullCalendar({
-    defaultView: 'agendaWeek',
+
 
     header: {
-      center: 'addEventButton'
+      left: 'prev,next today',
+      center: 'title,addEventButton', // same name as line 35 if want to add other buttons to do stuffs
+      right: 'month,agendaWeek,agendaDay'
     },
-    events: {
-      /*
-        example input
+    droppable: true,
+    editable: true,
+    events: [
+        props,
         {
           title: 'blah',
           start: '2018-03-16T12:30:00',
@@ -22,9 +26,8 @@ const Calendar = (props) => {
           title: 'blah2',
           start: '2018-03-17T11:30:00',
           end: '2018-03-16T12:30:00'
-        }
-      */
-    },
+        },
+    ],
     minTime: '',
 
     customButtons: {
@@ -60,26 +63,29 @@ const Calendar = (props) => {
 
     eventMouseover: function ( event, jsEvent, view ) {
       //placeholder for potential mouseover stuffs
-      $(this).css('background-color', 'blue')
+      //$(this).css('background-color', 'blue')
      },
 
     eventMouseout: function ( event, jsEvent, view ) {
       //also toggles for leaving after a click, will prob need to change
-      $(this).css('background-color', 'black')
+      //$(this).css('background-color', 'black')
     },
 
     eventClick: function ( event, jsEvent, view ) {
       //will likely use to select events not necesarily change color
-       $(this).css('background-color', 'pink' || 'blue')
+       console.log($(this))
     }
   });
   });
 
 
 return (
+    <div>
       <div id='calendar'></div>
+    </div>
   )
 }
+
 
 
 

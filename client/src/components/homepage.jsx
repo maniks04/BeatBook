@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import Calendar from '../actions/calendar.js'
 
+
 class Home extends React.Component {
     constructor(props) {
         super(props)
+
 
     }
 
@@ -14,11 +16,15 @@ class Home extends React.Component {
 
 
     render() {
+      let testEvent = {
+        title: 'props test event',
+        start: '2018-03-16T14:30:00',
+        end: '2018-03-16T16:30:00'
+      }
 
         return(
           <div>
-            <div>hello manik</div>
-            <div id='calendar'></div>
+            {Calendar(testEvent)}
           </div>
         )
     }
