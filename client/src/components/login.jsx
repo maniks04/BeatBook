@@ -42,7 +42,7 @@ class Login extends React.Component {
 
     render() {
         const actions = [
-            <FlatButton label="Cancel" onClick={this.closeLoginModal}/>,
+            <FlatButton label="Cancel" onClick={this.closeLoginModal}/>, //modal buttons
             <FlatButton label="Login" onClick={this.submitLogin}/>
         ]
 
