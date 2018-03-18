@@ -10,14 +10,20 @@ import Dialog from 'material-ui/Dialog';
 import Login from './login.jsx'
 import * as reducers from '../reducers/index.js'
 import Calendar from '../actions/calendar.js'
-// import music from './music.png'
+import TextField from 'material-ui/TextField';
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import NormalLoginForm from './loginform.jsx'
+
+const WrappedNormalLoginForm = Form.create()(NormalLoginForm); //component for antd loginform
+
 
 class Home extends React.Component {
     constructor(props) {
         super(props)
         this.submitLogin = this.submitLogin.bind(this)
-
     }
+
+    
 
 
     componentDidMount() {
@@ -45,29 +51,56 @@ class Home extends React.Component {
 
 
     render() {
+     
         const styles = {
             logo: {
+                float: 'left',
                 height: 25,
                 width: 25
             },
             beatbook: {
                 fontSize: 20,
-                float: 'left',
                 fontFamily: 'system-ui'
             },
-            login: {
+            loginbutton: {
                 textAlign: 'center'
+            },
+            loginbox: {
+                backgroundColor: 'white',
+                position: 'absolute',
+                borderStyle: 'solid',
+                borderWidth: .5,
+                borderColor: '#e6e6e6',
+                width: window.innerWidth/4,
+                height: window.innerHeight*.75,
+                left: window.innerWidth*3/8,
+                top: window.innerHeight*1/8,
+                textAlign: 'center'
+            },
+            loginform: {
+                margin: 50,
+                 marginTop: '25%',
+
             }
         }
-
+        //possible logo choices
+        //http://files.idg.co.kr/itworld/image/avatar/article/2015/March/sookyung_lee@idg.co.kr/%20%EB%B0%80%ED%81%AC.png
+        //https://cdn2.iconfinder.com/data/icons/advertising-and-media-1-1/512/45-512.png
         return( <div>
-                    <div>
-                    <div style={styles.beatbook}>beatbook</div>
-                    <img style={styles.logo} src="http://files.idg.co.kr/itworld/image/avatar/article/2015/March/sookyung_lee@idg.co.kr/%20%EB%B0%80%ED%81%AC.png"></img>
-                    </div>
-                    <div style={styles.login}>
-                    <Login submitLogin={this.submitLogin}/>
-                    </div>
+                  <div>
+                    {/* <img style={styles.logo} src=""></img> */}  
+                    {/* <div style={styles.beatbook}>beatbook</div> */}
+                  </div>
+                    {/* <div style={styles.loginbutton}>
+                    <Login submitLogin={this.submitLogin}/>         //login button & modal
+                    </div> */}
+                    <div style={styles.loginbox}>
+                      <div style={styles.beatbook}>beatbook</div>
+                      <div style={styles.loginform}>
+                        < WrappedNormalLoginForm submitLogin={this.submitLogin}/> 
+                      </div>
+                    </div >
+                    
                 </div>)
     }
 }
