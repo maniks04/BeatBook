@@ -2,123 +2,130 @@ import React from 'react';
 import $ from 'jquery';
 const moment = require('moment');
 import 'fullcalendar';
+import axios from 'axios'
 
-const Calendar = (props) => {
+
+// all you need to do is import Calender in a file and then call the calendar()
+//    within to have it be displayed.
+const Calendar = () => {
   $(function() {
     $('#calendar').fullCalendar({
+      // adds buttons for swaping the view and gives a title to the calendar (typically the date range of the view being showed.)
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay'
+      },
 
-    header: {
-      left: 'prev,next today',
-      center: 'title,addEventButton', // same name as line 35 if want to add other buttons to do stuffs
-      right: 'month,agendaWeek,agendaDay'
-    },
+      footer: {
+        // same layout as header if you want to add anything to bottom of calendar.
+      },
 
-    droppable: true,
-    editable: true,
-    selectable: true,
-    selectHelper: true,
-    unselectAuto: false,
+      // these allow calender elements to be moveable droppable not sticky and shows exactly what time it is on the calender
+      droppable: true,
+      editable: true,
+      selectable: true,
+      selectHelper: true,
+      unselectAuto: false,
+      nowIndicator: true,
 
+      // alows drag and release creation of events
+      select: function(start, end, allDay) {
+        var title = prompt('Event Title:');
+        var description = prompt('Event Description?')
+        if (title) {
+            $('#calendar').fullCalendar('renderEvent',
+                {
+                    title: title,
+                    start: start,
+                    end: end,
+                    description: description,
+                    allDay: false
+                },
+                true // make the event "stick"
+            );
 
+            axios.post('calendar', {
+              title: title,
+              description: description,
+              start: start,
+              end: end
+            }).then(res => {
+            }).catch(err => {
+              console.log(err)
+            })
 
-    select: function(start, end, allDay) {
-      var title = prompt('Event Title:');
-      var description = prompt('Event Description?')
-      if (title) {
-          $('#calendar').fullCalendar('renderEvent',
-              {
-                  title: title,
-                  start: start,
-                  end: end,
-                  description: description,
-                  allDay: false
-              },
-              true // make the event "stick"
-          );
-          /**
-           * ajax call to store event in DB
-           */
-          /*jQuery.post(
-              "event/new" // your url
-              , { // re-use event's data
-                  title: title,
-                  start: start,
-                  end: end,
-                  allDay: allDay
-              }
-          );*/
-      }
-      $('#calendar').fullCalendar('unselect');
-    },
-
-    events: [
-        props,
-        {
-          title: 'Tumble22',
-          start: '2018-03-16T12:30:00',
-          end: '2018-03-16T13:30:00',
-          description: 'OG Southern Chicken Sandwhich, Dang hot, with a side of chips, for here please'
-        },
-        {
-          title: 'Happy Chick',
-          start: '2018-03-17T11:30:00',
-          end: '2018-03-16T12:30:00',
-          description: 'Class Chic, spicy, with honey siracha and ranch please'
-        },
-    ],
-    eventRender: function(event, element) {
-      if (event.description) {
-        element.find('.fc-title').append("<br/>" + event.description);
-      }
-    },
-    minTime: '',
-
-    customButtons: {
-      addEventButton: {
-        text: 'add event...',
-        click: function() {
-
-          //for most events we would just pull them in from db with all this info (also can prob make a clearer form for event input)
-          var eventTitle = prompt('Event Title?');
-          var dateStartStr = prompt('Enter a date in YYYY-MM-DDTHH:MM:SS format');
-          var dateEndStr = prompt('Enter a end time in YYYY-MM-DDTHH:MM:SS format');
-          var dateStart = moment(dateStartStr);
-          var dateEnd = moment(dateEndStr);
-
-
-          if (dateStart.isValid() && dateEnd.isValid()) {
-            if (dateEnd.isValid()) {
-              $('#calendar').fullCalendar('renderEvent', {
-                title: eventTitle,
-                start: dateStart,
-                end: dateEnd,
-              });
-              alert('Great. Now, update your database...');
-            } else {
-              alert('Invalid End Date')
-            }
-          } else {
-            alert('Invalid Start Date');
-          }
         }
+        $('#calendar').fullCalendar('unselect');
+      },
+
+      // allows users to drag and drop events to reschedule them.
+      eventDrop: function(event, delta, revertFunc) {
+        let eventId = event.id
+        let timeChange = delta._data
+
+        axios.post('dragAndDrop', {
+          eventId: eventId,
+          timeChange: timeChange
+        })
+        .then(res => {
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      },
+
+      // grabs all events from db to display on calendar
+      events: function(start, end, timezone, callback) {
+        axios.get('calendar')
+        .then((res) => {
+          var events = []
+          res.data.forEach((event) => {
+            events.push({
+              title: event.title,
+              description: event.description,
+              start: event.start,
+              end: event.end,
+              id: event.id
+            })
+          })
+          callback(events)
+        }).catch((err) => {
+          console.log(err)
+        })
+      },
+
+      // attatches a description to event (possibly going to attatch this to a tooltip)
+
+      minTime: '04:00:00', // when the calendar starts the day.
+      // maxTime: '22:00:00', // when the calender ends the day.
+
+
+
+      eventMouseover: function(calEvent, jsEvent) {
+        var tooltip = '<div class="tooltipevent" style="width:200px;height:auto;background:white;border-style:inset;position:absolute;z-index:10001;">' + calEvent.description + '</div>';
+        var $tooltip = $(tooltip).appendTo('body');
+
+        $(this).mouseover(function(e) {
+            $(this).css('z-index', 10000);
+            $tooltip.fadeIn('500');
+            $tooltip.fadeTo('10', 1.9);
+        }).mousemove(function(e) {
+            $tooltip.css('top', e.pageY + 10);
+            $tooltip.css('left', e.pageX + 20);
+        });
+      },
+
+      eventMouseout: function(calEvent, jsEvent) {
+        $(this).css('z-index', 8);
+        $('.tooltipevent').remove();
+      },
+
+      eventClick: function ( event, jsEvent, view ) {
+        //will likely use to select events not necesarily change color
+         console.log($(this))
       }
-    },
-
-    eventMouseover: function ( event, jsEvent, view ) {
-      //placeholder for potential mouseover stuffs
-      //$(this).css('background-color', 'blue')
-     },
-
-    eventMouseout: function ( event, jsEvent, view ) {
-      //also toggles for leaving after a click, will prob need to change
-      //$(this).css('background-color', 'black')
-    },
-
-    eventClick: function ( event, jsEvent, view ) {
-      //will likely use to select events not necesarily change color
-       console.log($(this))
-    }
-  });
+    });
   });
 
 
