@@ -6,17 +6,19 @@ const app = express();
 const path = require('path');
 const bcrypt = require('bcrypt');
 const db = require('../database/index.js');
+const passport = require('passport')
 require('../server/config/passport')(passport);
 app.use(express.static(__dirname + '/../client/dist'));
-app.use(bodyParser.json());
-
-app.use(session({
+app.use(require('cookie-parser')());
+app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(require('express-session')({
   secret: process.env.SESSION_PASSWORD || 'supersecretsecret',
   resave: true,
   saveUninitialized: true
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(bodyParser.json());
 // app.use(express.static(__dirname + '/../app'));
 // app.use(express.static(__dirname + '/../node_modules'));
 
@@ -34,6 +36,7 @@ app.post('/', function(req, res) {
 });
 
 app.post('/login', passport.authenticate('local-login'), (req, res) => {
+  console.log(req.body)
   res.status(200).json({
     user_id: req.user.user_id,
     username: req.user.username,
@@ -48,15 +51,15 @@ app.post('/logout', isLoggedIn, (req, res) => {
 
 
 
-app.post('/password', (req,  res) => {
-  let username = req.body.username;
-  let password = req.body.password;
-  if (username === 'artist' && password === 'artist') {
-    res.send('artist')
-  } if (username === 'venue' && password === 'venue') {
-    res.send('venue')
-  }
-})
+// app.post('/password', (req,  res) => {
+//   let username = req.body.username;
+//   let password = req.body.password;
+//   if (username === 'artist' && password === 'artist') {
+//     res.send('artist')
+//   } if (username === 'venue' && password === 'venue') {
+//     res.send('venue')
+//   }
+// })
 
 
 /******************************** Calendar ***********************************/

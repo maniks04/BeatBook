@@ -16,16 +16,19 @@ class VenueRegisterForm extends React.Component {
     }
 
     
-  handleSubmit  (e)   {
+  registerVenue (e)   {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        this.props.submitLogin(values.userName, values.password)
+        this.props.registerVenue(values.userName, values.password, values.confirmPassword, values.email)
       }
     });
    
   }
+
+
+
 
 
 
@@ -37,7 +40,7 @@ class VenueRegisterForm extends React.Component {
     return (
       <div>
        
-      <Form onSubmit={this.handleSubmit} className="login-form">
+      <Form onSubmit={(e) => this.registerVenue(e)} className="login-form">
         <FormItem>
           {getFieldDecorator('userName', {
             rules: [{ required: true, message: 'Please input your username!' }],
@@ -53,17 +56,17 @@ class VenueRegisterForm extends React.Component {
           )}
         </FormItem>
         <FormItem>
-          {getFieldDecorator('password', {
+          {getFieldDecorator('confirmPassword', {
             rules: [{ required: true, message: 'Please input your Password!' }],
           })(
             <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Confirm Password" />
           )}
         </FormItem>
         <FormItem>
-          {getFieldDecorator('password', {
+          {getFieldDecorator('email', {
             rules: [{ required: true, message: 'Please input your Password!' }],
           })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Email" />
+            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="email" placeholder="Email" />
           )}
         </FormItem>
         <FormItem>
