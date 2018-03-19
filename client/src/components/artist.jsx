@@ -12,7 +12,7 @@ import { Avatar } from 'antd';
 
 class Artist extends React.Component {
     constructor(props) {
-        super(props) 
+        super(props)
         this.state = {
             open:false
         }
@@ -25,7 +25,7 @@ class Artist extends React.Component {
 
 
     logout() {
-        this.props.history.replace('/')   
+        this.props.history.replace('/')
     }
 
 
@@ -66,11 +66,7 @@ class Artist extends React.Component {
             }
         }
 
-        let testEvent = {
-            title: 'props test event',
-            start: '2018-03-16T14:30:00',
-            end: '2018-03-16T16:30:00'
-        }
+        
         return(<div>
                     <nav style={styles.manik}>
                         {/* <div style={styles.manik} ></div> */}
@@ -91,14 +87,14 @@ class Artist extends React.Component {
                     <div>
                         <Button type="primary" onClick={() => this.setState({open: true})}>Open</Button>
                         <Modal
-                        title="Basic Modal"
+                        title="Events"
                         visible={this.state.open}
                         //   onOk={this.handleOk}
                         onCancel={() => this.setState({open:false})}>
-                        {calendar(testEvent)}
+                        {calendar()}
                         </Modal>
                     </div>
-            
+
                 </div>)
     }
 }
