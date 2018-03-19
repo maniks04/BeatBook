@@ -7,7 +7,7 @@ import axios from 'axios'
 const Calendar = () => {
   $(function() {
     $('#calendar').fullCalendar({
-
+      // adds buttons for swaping the view and gives a title to the calendar (typically the date range of the view being showed.)
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -18,7 +18,7 @@ const Calendar = () => {
         // same layout as header if you want to add anything to bottom of calendar.
       },
 
-
+      // these allow calender elements to be moveable droppable not sticky and shows exactly what time it is on the calender
       droppable: true,
       editable: true,
       selectable: true,
@@ -26,8 +26,7 @@ const Calendar = () => {
       unselectAuto: false,
       nowIndicator: true,
 
-
-
+      // alows drag and release creation of events
       select: function(start, end, allDay) {
         var title = prompt('Event Title:');
         var description = prompt('Event Description?')
@@ -58,6 +57,7 @@ const Calendar = () => {
         $('#calendar').fullCalendar('unselect');
       },
 
+      // allows users to drag and drop events to reschedule them.
       eventDrop: function(event, delta, revertFunc) {
         let eventId = event.id
         let timeChange = delta._data
@@ -74,7 +74,7 @@ const Calendar = () => {
         })
       },
 
-
+      // grabs all events from db to display on calendar
       events: function(start, end, timezone, callback) {
         axios.get('calendar')
         .then((res) => {
@@ -94,7 +94,7 @@ const Calendar = () => {
         })
       },
 
-
+      // attatches a description to event (possibly going to attatch this to a tooltip)
       eventRender: function(event, element) {
         if (event.description) {
           element.find('.fc-title').append("<br/>" + event.description);
@@ -124,7 +124,8 @@ const Calendar = () => {
     });
   });
 
-
+// all you need to do is import Calender in a file and then call the calendar()
+//    within to have it be displayed.
 return (
     <div>
       <div id='calendar'></div>
