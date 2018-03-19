@@ -20,8 +20,6 @@ app.post('/password', (req,  res) => {
     res.send('artist')
   } if (username === 'venue' && password === 'venue') {
     res.send('venue')
-  } else {
-    res.send(false)
   }
 })
 app.get('/*', (req, res) => {
