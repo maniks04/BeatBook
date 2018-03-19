@@ -29,6 +29,7 @@ const isLoggedIn = (req, res, next) => {
 
 // Due to express, when you load the page, it doesnt make a get request to '/', it simply serves up the dist folder
 app.post('/', function(req, res) {
+
   
 });
 
@@ -46,6 +47,7 @@ app.post('/logout', isLoggedIn, (req, res) => {
 });
 
 
+
 app.post('/password', (req,  res) => {
   let username = req.body.username;
   let password = req.body.password;
@@ -56,40 +58,44 @@ app.post('/password', (req,  res) => {
   }
 })
 
-/***********************************************************************/
-/*                        login                                        */
 
-// app.checkPassword = (userName, pw, checkPw) => {
-//   return bcrypt.compareSync(pw, checkPw);
-// };
+/******************************** Calendar ***********************************/
 
+app.post('/calendar', (req, res) => {
+  let title = req.body.title;
+  let description = req.body.description;
+  let start = req.body.start;
+  let end = req.body.end;
+  res.status(200).end()
+})
 
-// app.get('/login', async (req, res) =>{
-//   let userName = req.query.username;
-//   let userPass = req.query.password;
+app.post('/dragAndDrop', (req, res) => {
+  let id = req.body.eventId;
+  let timeChange = req.body.timeChange;
+  res.status(200).end()
+})
 
-//   try {
-//     let { password } = await db.retrieveUserPassword(userName);
-//     if (app.checkPassword(userName, userPass, password)) {
-//       req.session.loggedIn = true;
-//       res.status(200).end();
-//     } else {
-//       console.log('Unmatching username and password');
-//       res.status(200).json({ error: true, message: 'Sorry, username and password do not match! Please try again!' });
-//     }
-//   } catch (e) {
-//     res.status(200).json({ error: true, message: 'Sorry, we didn\'t recognize that username. Please try again!' });
-//   }
-// });
+app.get('/calendar', (req, res) => {
+  testData = [
+    {
+      title: 'Tumble22',
+      start: '2018-03-22T12:30:00',
+      end: '2018-03-22T13:30:00',
+      description: 'OG Southern Chicken Sandwhich, Dang hot, with a side of chips, for here please.',
+      id: 1
+    },
+    {
+      title: 'Happy Chick',
+      start: '2018-03-23T11:30:00',
+      end: '2018-03-23T12:30:00',
+      description: 'Classic Chic, spicy, with honey siracha and ranch, to go please.',
+      id: 2
+    },
+  ]
+  res.status(200).send(testData).end()
+})
 
-// app.get('/logout', (req, res) => {
-//   req.session.destroy((err) => {
-//     if (err) {
-//       res.status(500).send(err);
-//     }
-//   });
-//   res.end();
-// });
+/*****************************************************************************/
 
 
 app.get('/*', (req, res) => {
