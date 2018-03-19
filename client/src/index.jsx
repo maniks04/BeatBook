@@ -1,19 +1,41 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import Home from './components/homepage.jsx'
+import Artist from './components/artist.jsx'
+import Venue from './components/venue.jsx'
+import reducer from './reducers/index.js';
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
+import $ from 'jquery'
 // import AnyComponent from './components/filename.jsx'
 
-class App extends React.Component {
-  constructor(props) {
-  	super(props)
-  	this.state = {
+let store = createStore(reducer)
+//let store = createStore(reducer, applyMiddleware(thunk));
 
-  	}
-  }
+const Base = ({ store }) => (
+  <Provider store={store}>
+      <Router>
+      <MuiThemeProvider theme={getMuiTheme(lightBaseTheme)}>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/artist" component={Artist} />
+          <Route exact path="/venue" component={Venue} />
+        </Switch>
+        </MuiThemeProvider>
+      </Router>
+  </Provider>
+);
 
-  render () {
-  	return (<div>Hello World</div>)
-  }
+
+function render() {
+ReactDOM.render(<Base store={store} />, document.getElementById('app'));
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+store.subscribe(render);
+render()
+
