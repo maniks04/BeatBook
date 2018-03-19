@@ -4,6 +4,9 @@ const moment = require('moment');
 import 'fullcalendar';
 import axios from 'axios'
 
+
+// all you need to do is import Calender in a file and then call the calendar()
+//    within to have it be displayed.
 const Calendar = () => {
   $(function() {
     $('#calendar').fullCalendar({
@@ -48,7 +51,6 @@ const Calendar = () => {
               start: start,
               end: end
             }).then(res => {
-              console.log('event sent to server')
             }).catch(err => {
               console.log(err)
             })
@@ -67,7 +69,6 @@ const Calendar = () => {
           timeChange: timeChange
         })
         .then(res => {
-          console.log('dragAndDrop event sent to server')
         })
         .catch(err => {
           console.log(err)
@@ -95,26 +96,29 @@ const Calendar = () => {
       },
 
       // attatches a description to event (possibly going to attatch this to a tooltip)
-      eventRender: function(event, element) {
-        if (event.description) {
-          element.find('.fc-title').append("<br/>" + event.description);
-        }
-      },
-
 
       minTime: '04:00:00', // when the calendar starts the day.
       // maxTime: '22:00:00', // when the calender ends the day.
 
 
 
-      eventMouseover: function ( event, jsEvent, view ) {
-        //placeholder for potential mouseover stuffs
-        //$(this).css('background-color', 'blue')
-       },
+      eventMouseover: function(calEvent, jsEvent) {
+        var tooltip = '<div class="tooltipevent" style="width:200px;height:auto;background:white;border-style:inset;position:absolute;z-index:10001;">' + calEvent.description + '</div>';
+        var $tooltip = $(tooltip).appendTo('body');
 
-      eventMouseout: function ( event, jsEvent, view ) {
-        //also toggles for leaving after a click, will prob need to change
-        //$(this).css('background-color', 'black')
+        $(this).mouseover(function(e) {
+            $(this).css('z-index', 10000);
+            $tooltip.fadeIn('500');
+            $tooltip.fadeTo('10', 1.9);
+        }).mousemove(function(e) {
+            $tooltip.css('top', e.pageY + 10);
+            $tooltip.css('left', e.pageX + 20);
+        });
+      },
+
+      eventMouseout: function(calEvent, jsEvent) {
+        $(this).css('z-index', 8);
+        $('.tooltipevent').remove();
       },
 
       eventClick: function ( event, jsEvent, view ) {
@@ -124,8 +128,7 @@ const Calendar = () => {
     });
   });
 
-// all you need to do is import Calender in a file and then call the calendar()
-//    within to have it be displayed.
+
 return (
     <div>
       <div id='calendar'></div>
