@@ -9,7 +9,7 @@ app.use(express.static(__dirname + '/../client/dist'));
 
 // Due to express, when you load the page, it doesnt make a get request to '/', it simply serves up the dist folder
 app.post('/', function(req, res) {
-  
+
 })
 
 
@@ -22,6 +22,18 @@ app.post('/password', (req,  res) => {
     res.send('venue')
   }
 })
+
+
+app.post('/calendar', (req, res) => {
+  console.log('req.body: ', req.body)
+  let title = req.body.title;
+  let description = req.body.description;
+  let start = req.body.start;
+  let end = req.body.end;
+  res.status(200).end()
+})
+
+
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname + '/../client/dist' + '/index.html'))
 })
