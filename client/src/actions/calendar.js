@@ -4,14 +4,18 @@ const moment = require('moment');
 import 'fullcalendar';
 import axios from 'axios'
 
-const Calendar = (props) => {
+const Calendar = () => {
   $(function() {
     $('#calendar').fullCalendar({
 
       header: {
         left: 'prev,next today',
-        center: 'title', // same name as line 35 if want to add other buttons to do stuffs
+        center: 'title',
         right: 'month,agendaWeek,agendaDay'
+      },
+
+      footer: {
+        // same layout as header if you want to add anything to bottom of calendar.
       },
 
 
@@ -54,22 +58,41 @@ const Calendar = (props) => {
         $('#calendar').fullCalendar('unselect');
       },
 
+      eventDrop: function(event, delta, revertFunc) {
+        let eventId = event.id
+        let timeChange = delta._data
 
-      events: [
-          props,
-          {
-            title: 'Tumble22',
-            start: '2018-03-16T12:30:00',
-            end: '2018-03-16T13:30:00',
-            description: 'OG Southern Chicken Sandwhich, Dang hot, with a side of chips, for here please.'
-          },
-          {
-            title: 'Happy Chick',
-            start: '2018-03-17T11:30:00',
-            end: '2018-03-16T12:30:00',
-            description: 'Classic Chic, spicy, with honey siracha and ranch, to go please.'
-          },
-      ],
+        axios.post('dragAndDrop', {
+          eventId: eventId,
+          timeChange: timeChange
+        })
+        .then(res => {
+          console.log('dragAndDrop event sent to server')
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      },
+
+
+      events: function(start, end, timezone, callback) {
+        axios.get('calendar')
+        .then((res) => {
+          var events = []
+          res.data.forEach((event) => {
+            events.push({
+              title: event.title,
+              description: event.description,
+              start: event.start,
+              end: event.end,
+              id: event.id
+            })
+          })
+          callback(events)
+        }).catch((err) => {
+          console.log(err)
+        })
+      },
 
 
       eventRender: function(event, element) {
