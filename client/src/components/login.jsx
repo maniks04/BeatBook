@@ -6,66 +6,86 @@ import { bindActionCreators } from 'redux';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import axios from 'axios'
-import RaisedButton from 'material-ui/RaisedButton';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
-import * as reducers from '../reducers/index.js'
-import { Dispatch } from "redux";
+import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import LoginForm from './loginform.jsx'
 
+const logo = 'https://cdn3.iconfinder.com/data/icons/business-vol-2/72/57-512.png'
+const LoginFormContainer = Form.create()(LoginForm); //component for antd loginform
 
 class Login extends React.Component {
     constructor(props) {
         super(props)
-        this.openLoginModal = this.openLoginModal.bind(this)
-        this.closeLoginModal = this.closeLoginModal.bind(this)
-        this.submitLogin = this.submitLogin.bind(this)
     }
 
 
-    openLoginModal() {
-       this.props.actions.openLoginModal()  //sets login modal state to true
-    }
-    closeLoginModal() {
-        this.props.actions.closeLoginModal() //sets login modal state to false
-    }
+componentDidMount() {
+    console.log('login', this.props.history)
+}
 
-   
-    submitLogin() {
-        let username = $('#loginUsernameInput').val()
-        let password = $('#loginPasswordInput').val()
-        this.props.actions.closeLoginModal()
-        this.props.submitLogin(username, password)
-    }
 
-    
+
 
     render() {
-        const actions = [
-            <FlatButton label="Cancel" onClick={this.closeLoginModal}/>, //modal buttons
-            <FlatButton label="Login" onClick={this.submitLogin}/>
-        ]
+        const styles = {
+            logo: {
+                height: 20,
+                width: 20,
+                display: 'inline-block'
 
-        return( <div>
-                    <RaisedButton onClick={this.openLoginModal} label='login'/>
-                    <Dialog 
-                        actions={actions} 
-                        open={this.props.store.loginModalStatus} //modal state is false
-                        onRequestClose={this.closeLoginModal}> 
-                        <TextField
-                            id="loginUsernameInput" 
-                            placeholder="username"
-                        />
-                        <TextField
-                            id="loginPasswordInput" 
-                            placeholder="password"
-                        /> 
-                    </Dialog>
-                </div>)
+            },
+            beatbook: {
+                fontSize: 20,
+                fontFamily: 'system-ui',
+                marginTop: '5%',
+                display: 'inline-block'
+            },
+            loginbutton: {
+                textAlign: 'center'
+            },
+            loginbox: {
+                backgroundColor: 'white',
+                position: 'absolute',
+                borderStyle: 'solid',
+                borderWidth: .5,
+                borderColor: '#e6e6e6',
+                width: window.innerWidth/4,
+                height: window.innerHeight*.75,
+                left: window.innerWidth*3/8,
+                top: window.innerHeight*1/8,
+                textAlign: 'center'
+            },
+            loginform: {
+                marginLeft: 50,
+                marginRight: 50
+
+            },
+            divider: {
+                borderStyle: 'solid',
+                borderWidth: .5,
+                borderColor: '#e6e6e6', 
+                marginLeft: 25,
+                marginRight: 25,
+                marginTop: 50,
+                marginBottom: 50
+            }
+        }
+
+       
+        return(
+            <div style={styles.loginbox}>
+                      <img src={logo} style={styles.logo}></img>
+                      <div style={styles.beatbook}>beatbook</div>
+                      <div style={styles.divider}></div>
+                      <div style={styles.loginform}>
+                        <LoginFormContainer submitLogin={this.props.submitLogin}/> 
+                      </div>
+                      <div className="fb-login-button" data-size="medium" data-auto-logout-link="true">login</div>
+                    </div >
+        )
     }
 }
 
-// ]\
+
 const mapStateToProps = state => (
     { store: state } // eslint-disable-line
   );
@@ -74,5 +94,4 @@ const mapStateToProps = state => (
     { actions: bindActionCreators(actions, dispatch) }
   );
 
-  export default connect(mapStateToProps, mapDispatchToProps)(Login);
-//export default Login
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

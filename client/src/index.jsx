@@ -6,6 +6,8 @@ import thunk from 'redux-thunk';
 import Home from './components/homepage.jsx'
 import Artist from './components/artist.jsx'
 import Venue from './components/venue.jsx'
+import ArtistRegister from './components/artistregister.jsx'
+import VenueRegister from './components/venueregister.jsx'
 import reducer from './reducers/index.js';
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -25,6 +27,8 @@ const Base = ({ store }) => (
           <Route exact path="/" component={Home} />
           <Route exact path="/artist" component={Artist} />
           <Route exact path="/venue" component={Venue} />
+          <Route exact path="/artistregister" component={ArtistRegister} />
+          <Route exact path="/venueregister" component={VenueRegister} />
         </Switch>
         </MuiThemeProvider>
       </Router>
